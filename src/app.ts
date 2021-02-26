@@ -1,12 +1,12 @@
-import "reflect-metadata"
-import express from "express"
-import createConnection from './database'
-import { router } from "./routes"
-createConnection()
+import "reflect-metadata";
+import express from 'express';
+import createConnection from './database/index'
+import routes from './routes/index'
 
-const app = express()
+createConnection();
+const app = express();
 
 app.use(express.json())
-app.use(router)
+app.use(routes)
 
-export { app }
+export default app;
