@@ -1,19 +1,24 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
-import { v4 as uuid } from "uuid"
+import { Entity, PrimaryColumn, Column } from 'typeorm'
+import { v1 as uuid } from 'uuid'
 
-@Entity("users")
-class User {
-    @PrimaryColumn()
+@Entity('surveys_users')
+class SurveyUser {
+
+    @PrimaryColumn('uuid')
     readonly id: string;
 
     @Column()
-    name: string;
+    user_id: string;
+
 
     @Column()
-    email: string;
+    survey_id: string;
 
-    @CreateDateColumn()
-    created_at: Date
+    @Column()
+    value: number;
+
+    @Column()
+    created_at: Date;
 
     constructor() {
         if (!this.id) {
@@ -22,4 +27,4 @@ class User {
     }
 }
 
-export { User }
+export default SurveyUser;

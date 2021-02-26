@@ -1,27 +1,44 @@
-import { Request, Response } from "express"
-import { getCustomRepository } from "typeorm"
-import { UsersRepository } from "../repositories/UserRepository"
+import { Request, Response } from 'express';
+import { getCustomRepository } from 'typeorm';
+import UserRepository from '../repositories/UserRepository';
 
 class UserController {
-    async create(req: Request, res: Response) {
-        const { name, email } = req.body
-        const usersRepository = getCustomRepository(UsersRepository)
-        const userAlreadyExists = await usersRepository.findOne({
-            email
-        })
-        const user = usersRepository.create({
-            name, email
-        })
+
+    async create(request: Request, response: Response) {
+
+        const data_atual = new Date();
+
+        const { name, email } = request.body
+
+        const userRepository = getCustomRepository(UserRepository)
+
+        const userAlreadyExists = await userRepository.findOne({ email })
 
         if (userAlreadyExists) {
-            return res.status(400).json({
-                error: "User already exists!"
-            })
+            return response.status(409).json({ mensagem: "Email ja cadastrado" })
         }
 
-        await usersRepository.save(user)
-        return res.status(201).json(user)
+        const user = userRepository.create({
+            name,
+            email,
+            created_at: data_atual
+        })
+
+        await userRepository.save(user)
+
+        return response.status(201).json(user)
+    }
+
+    async getall(request: Request, response: Response) {
+
+        const userRepository = getCustomRepository(UserRepository)
+
+        const userAlreadyExists = await userRepository.find()
+
+        return response.status(200).json(userAlreadyExists)
+
     }
 }
 
-export { UserController }
+
+export default UserController;
