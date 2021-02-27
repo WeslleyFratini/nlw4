@@ -1,4 +1,3 @@
-
 import { Repository, EntityRepository } from "typeorm";
 import Survey from "../models/Survey";
 
